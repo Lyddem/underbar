@@ -102,14 +102,33 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
-    return array.slice();
-  };
+     var arr = array.slice().sort();
+  
+    for(var i = 1; i < arr.length; i++){
+    while(arr[i] === arr[i-1]){
+      arr.splice(i,1)
+    }
+   }
+    return arr;
+};
 
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var results = [];
+    if(Array.isArray(collection)){
+      for(var i = 0; i < collection.length; i++){
+        results.push(iterator(collection[i],i,collection)) 
+      } 
+    } else {
+        for(var key in collection){
+          results.push(iterator(collection[key],key,collection))
+        }
+      }
+  
+    return results;
   };
 
   /*
