@@ -127,7 +127,7 @@
           results.push(iterator(collection[key],key,collection))
         }
       }
-  
+
     return results;
   };
 
@@ -170,6 +170,27 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+
+    var hasAccumulator; 
+
+    // arguments.length === 3 ? hasAccumulator = true; : hasAccumulator = false;
+    if(arguments.length === 3){
+        hasAccumulator = true;
+      }
+      else{
+        hasAccumulator = false;
+      } 
+
+    _.each(collection, function(item){
+      if(hasAccumulator){
+        accumulator = iterator(accumulator, item);
+      } else {
+        accumulator = item;
+        hasAccumulator = true;
+      }
+    })
+        return accumulator;
+
   };
 
   // Determine if the array or object contains a given value (using `===`).
