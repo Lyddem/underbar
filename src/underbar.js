@@ -209,6 +209,14 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+
+    iterator = iterator || _.identity;
+
+    _.each(collection, function(item){
+        if(!iterator(item)){  
+          return false;
+        } 
+    }); 
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -236,14 +244,20 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
-  };
+  _.extend = function(obj1, obj2) {
+    var args = Array.prototype.slice.call(arguments);
+    for(var i = 1; i < args.length; i++){
+      _.each(args[i], function(value,key){
+        obj1[key] = value;
+      })   
+    }
+      return obj1;
+  };  
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
   };
-
 
   /**
    * FUNCTIONS
@@ -337,6 +351,18 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    var args = arguments.length;
+    var final = [];
+
+    _.each(args[0], function(elem){
+      final.push([elem]);
+    })
+
+    _.each(args[1], function(elem2){
+      _.each(final, function(arr){
+
+      })
+    })
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
