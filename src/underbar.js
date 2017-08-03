@@ -244,19 +244,32 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj1, obj2) {
+  _.extend = function(obj1) {
+    //copy of all arguments
     var args = Array.prototype.slice.call(arguments);
+    //loop through arguments starting at i=1
     for(var i = 1; i < args.length; i++){
       _.each(args[i], function(value,key){
-        obj1[key] = value;
+        obj1[key] = value; //add each value to obj1
       })   
     }
       return obj1;
   };  
 
-  // Like extend, but doesn't ever overwrite a key that already
-  // exists in obj
-  _.defaults = function(obj) {
+  // Like extend, but doesn't ever overwrite a key that already exists in obj
+  _.defaults = function(obj1) {
+
+    var args = Array.prototype.slice.call(arguments);
+
+    for(var i = 0; i < args.length; i++){
+
+      _.each(args[i], function(value,key){
+        if(obj1[key] === undefined){
+           obj1[key] = value; 
+         }
+      })   
+    }
+      return obj1;
   };
 
   /**
