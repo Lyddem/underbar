@@ -159,7 +159,7 @@
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as its second argument.
   //  
-  // Example:
+  // Example: 
   //   var numbers = [1,2,3];
   //   var sum = _.reduce(numbers, function(total, number){
   //     return total + number;
@@ -210,19 +210,53 @@
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
 
+    var final = [];
+
     iterator = iterator || _.identity;
 
     _.each(collection, function(item){
-        if(!iterator(item)){  
-          return false;
+        if(iterator(item)){  
+          final.push(item);
         } 
     }); 
+      if(final.length === collection.length) {
+        return true;
+      }
+        return false;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
+  _.some = function(collection, iterator) { //[1,2,3] , isEven
+
+    iterator = iterator || collection;
     // TIP: There's a very clever way to re-use every() here.
+    var final = [];
+
+    if(arguments.length === 1){
+       _.each(collection, function(item,key){ //final = [true]
+      if(item){ // if item === true
+        final.push(true);
+      }
+    })
+      if(final.length !== 0){
+      return true;
+    }
+      return false
+
+
+    } else {
+
+    _.each(collection, function(item,key){ //final = [true]
+      if(iterator(item)){
+        final.push(true);
+      }
+    })
+      if(final.length !== 0){
+      return true;
+    }
+      return false;
+    }
   };
 
 
@@ -307,16 +341,26 @@
   // that the function only takes primitives as arguments.
   // memoize could be renamed to oncePerUniqueArgumentList; memoize does the
   // same thing as once, but based on many sets of unique arguments.
-  //
+  
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
 
-  };
+   var hash = {};
+
+    return function() {
+
+    var input = JSON.stringify(arguments); //stringify arguments.
+    if(!hash[input]){ //if these args are not in hash
+      hash[input] = func.apply(this,arguments); //store result of func(input)
+    }      
+      return  hash[input];
+  }
+};
 
   // Delays a function for the given number of milliseconds, and then calls
-  // it with the arguments supplied.
+  // it with the arguments supplied. 
   //
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
