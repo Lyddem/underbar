@@ -347,16 +347,15 @@
   // instead if possible.
   _.memoize = function(func) {
 
-   var hash = {};
+    var storage = {};
 
-    return function() {
-
-    var input = JSON.stringify(arguments); //stringify arguments.
-    if(!hash[input]){ //if these args are not in hash
-      hash[input] = func.apply(this,arguments); //store result of func(input)
-    }      
-      return  hash[input];
-  }
+    return function(){
+      var args = JSON.stringify(arguments);
+      if(!storage[args]){
+        storage[args] = func.apply(this,arguments);
+      }
+        return storage[args];
+    }
 };
 
   // Delays a function for the given number of milliseconds, and then calls
